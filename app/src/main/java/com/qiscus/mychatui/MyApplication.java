@@ -36,7 +36,10 @@ public class MyApplication extends MultiDexApplication {
         component = new AppComponent(this);
 
         Nirmana.init(this);
-        QiscusCore.setup(this, BuildConfig.QISCUS_SDK_APP_ID);
+        QiscusCore.setupWithCustomServer(this, BuildConfig.QISCUS_SDK_APP_ID,
+                "https://sdk-halodoc-archival.qiscus.com/",
+                null,
+                null);
 
         QiscusCore.getChatConfig()
                 .enableDebugMode(true)

@@ -24,9 +24,9 @@ public class AppFirebaseMessagingService extends FirebaseMessagingService {
         super.onMessageReceived(remoteMessage);
 
         Log.d("Qiscus", "onMessageReceived " + remoteMessage.getData().toString());
-        if (QiscusFirebaseMessagingUtil.handleMessageReceived(remoteMessage)) {
-            return;
-        }
+//        if (QiscusFirebaseMessagingUtil.handleMessageReceived(remoteMessage)) {
+//            return;
+//        }
     }
 
     @Override

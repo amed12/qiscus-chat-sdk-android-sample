@@ -26,7 +26,7 @@ public class ChatRoomRepositoryImpl implements ChatRoomRepository {
     @Override
     public void getChatRooms(Action<List<QiscusChatRoom>> onSuccess, Action<Throwable> onError) {
         Observable.from(QiscusCore.getDataStore().getChatRooms(100))
-                .filter(chatRoom -> chatRoom.getLastComment() != null)
+//                .filter(chatRoom -> chatRoom.getLastComment() != null)
                 .toList()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -36,7 +36,7 @@ public class ChatRoomRepositoryImpl implements ChatRoomRepository {
                 .getAllChatRooms(true, false, true, 1, 100)
                 .flatMap(Observable::from)
                 .doOnNext(qiscusChatRoom -> QiscusCore.getDataStore().addOrUpdate(qiscusChatRoom))
-                .filter(chatRoom -> chatRoom.getLastComment().getId() != 0)
+//                .filter(chatRoom -> chatRoom.getLastComment().getId() != 0)
                 .toList()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
