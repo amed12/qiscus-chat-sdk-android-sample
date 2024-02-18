@@ -82,77 +82,11 @@
                 android:layout_marginLeft="40dp"
                 android:layout_marginRight="40dp"
                 android:layout_marginBottom="20dp"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/textView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="USER ID" />
-
-                <EditText
-                    android:id="@+id/et_user_id"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="User ID"
-                    android:inputType="textPersonName" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="40dp"
-                android:layout_marginRight="40dp"
-                android:layout_marginBottom="20dp"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/tv_user_key"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="USER KEY" />
-
-                <EditText
-                    android:id="@+id/et_password"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Password"
-                    android:inputType="textPassword" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="40dp"
-                android:layout_marginRight="40dp"
-                android:layout_marginBottom="50dp"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/tv_display_name"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="DISPLAY NAME" />
-
-                <EditText
-                    android:id="@+id/et_display_name"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Display Name"
-                    android:inputType="textPersonName|text" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="40dp"
-                android:layout_marginRight="40dp"
-                android:layout_marginBottom="20dp"
                 android:gravity="center"
                 android:orientation="vertical">
 
                 <LinearLayout
-                    android:id="@+id/login"
+                    android:id="@+id/login1"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:background="@drawable/bt_qiscus_radius"
@@ -166,7 +100,46 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_margin="5dp"
-                        android:text="START"
+                        android:text="LOGIN USER 1"
+                        android:textColor="@color/qiscus_white"
+                        android:textSize="18sp" />
+
+                    <ImageView
+                        android:id="@+id/img"
+                        android:layout_width="15dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:src="@drawable/ic_next_arrow"
+                        android:tint="@color/qiscus_white" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="40dp"
+                android:layout_marginRight="40dp"
+                android:layout_marginBottom="20dp"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:id="@+id/login2"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="@drawable/bt_qiscus_radius"
+                    android:clickable="true"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tv_start"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_margin="5dp"
+                        android:text="LOGIN USER 2"
                         android:textColor="@color/qiscus_white"
                         android:textSize="18sp" />
 

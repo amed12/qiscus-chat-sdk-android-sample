@@ -1,8 +1,16 @@
 package com.qiscus.mychatui;
 
 
+import android.util.Log;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
 import androidx.multidex.MultiDexApplication;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
+import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 import com.qiscus.jupuk.Jupuk;
 import com.qiscus.mychatui.util.PushNotificationUtil;
 import com.qiscus.nirmana.Nirmana;
@@ -36,12 +44,45 @@ public class MyApplication extends MultiDexApplication {
         component = new AppComponent(this);
 
         Nirmana.init(this);
-        QiscusCore.setup(this, BuildConfig.QISCUS_SDK_APP_ID);
+        FirebaseRemoteConfig firebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
+        FirebaseRemoteConfigSettings configSettings = new FirebaseRemoteConfigSettings.Builder()
+                .setMinimumFetchIntervalInSeconds(3600)
+                .build();
+        firebaseRemoteConfig.setConfigSettingsAsync(configSettings);
+        firebaseRemoteConfig.fetchAndActivate()
+                .addOnCompleteListener(new OnCompleteListener<Boolean>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Boolean> task) {
+                        if (task.isSuccessful()) {
+                            boolean updated = task.getResult();
+                            Log.d("remoteConfig", "Config params updated: " + updated);
+                            Toast.makeText(getApplicationContext(), "Fetch and activate succeeded",
+                                    Toast.LENGTH_SHORT).show();
 
-        QiscusCore.getChatConfig()
-                .enableDebugMode(true)
-                .setNotificationListener(PushNotificationUtil::showNotification)
-                .setEnableFcmPushNotification(true);
+                        } else {
+                            Toast.makeText(getApplicationContext(), "Fetch failed",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                        String appId = firebaseRemoteConfig.getString("app_id");
+                        Boolean isCustomServer = firebaseRemoteConfig.getBoolean("is_custom_server");
+                        String customServerUrl = firebaseRemoteConfig.getString("custom_server");
+                        if (isCustomServer){
+                            QiscusCore.setupWithCustomServer(getInstance(),
+                                    appId,
+                                    customServerUrl,
+                                    null,
+                                    null);
+                        }else {
+                            QiscusCore.setup(getInstance(), appId);
+                            Toast.makeText(getApplicationContext(), "App id Current -> "+appId,
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                        QiscusCore.getChatConfig()
+                                .enableDebugMode(true)
+                                .setNotificationListener(PushNotificationUtil::showNotification)
+                                .setEnableFcmPushNotification(true);
+                    }
+                });
         initEmoji();
         Jupuk.init(this);
     }

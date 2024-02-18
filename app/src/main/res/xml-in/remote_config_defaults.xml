@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<defaultsMap>
+    <entry>
+        <key>app_id</key>
+        <value>sdksample</value>
+    </entry>
+    <entry>
+        <key>custom_server</key>
+        <value>https://api.qiscus.com/</value>
+    </entry>
+    <entry>
+        <key>is_custom_server</key>
+        <value>false</value>
+    </entry>
+</defaultsMap>

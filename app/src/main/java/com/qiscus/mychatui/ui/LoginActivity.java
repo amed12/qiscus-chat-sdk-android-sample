@@ -12,7 +12,11 @@ import android.widget.Toast;
 
 import com.qiscus.mychatui.MyApplication;
 import com.qiscus.mychatui.R;
+import com.qiscus.mychatui.data.model.User;
 import com.qiscus.mychatui.presenter.LoginPresenter;
+import com.qiscus.sdk.chat.core.QiscusCore;
+import com.qiscus.sdk.chat.core.data.model.QiscusChatRoom;
+import com.qiscus.sdk.chat.core.data.remote.QiscusPusherApi;
 
 /**
  * Created on : January 30, 2018
@@ -21,21 +25,18 @@ import com.qiscus.mychatui.presenter.LoginPresenter;
  * GitHub     : https://github.com/zetbaitsu
  */
 public class LoginActivity extends AppCompatActivity implements LoginPresenter.View {
-    private EditText displayName;
-    private EditText userId;
-    private EditText password;
-    private LinearLayout loginButton;
+
+    private LinearLayout login1Button;
+    private LinearLayout login2Button;
     private ProgressDialog progressDialog;
+    private String cross;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
-        userId = findViewById(R.id.et_user_id);
-        password = findViewById(R.id.et_password);
-        displayName = findViewById(R.id.et_display_name);
-        loginButton = findViewById(R.id.login);
+        login1Button = findViewById(R.id.login1);
+        login2Button = findViewById(R.id.login2);
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Please wait!");
 
@@ -44,28 +45,39 @@ public class LoginActivity extends AppCompatActivity implements LoginPresenter.V
 
         loginPresenter.start();
 
-        loginButton.setOnClickListener(v -> {
-            if (TextUtils.isEmpty(userId.getText().toString())) {
-                userId.setError("Must not empty!");
-            } else if (TextUtils.isEmpty(password.getText().toString())) {
-                password.setError("Must not empty!");
-            } else if (TextUtils.isEmpty(displayName.getText().toString())) {
-                displayName.setError("Must not empty!");
-
-            } else {
-                loginPresenter.login(
-                        userId.getText().toString(),
-                        password.getText().toString(),
-                        displayName.getText().toString()
-                );
-            }
+        login1Button.setOnClickListener(v -> {
+            loginPresenter.login(
+                    "guest-1001",
+                    "passkey",
+                    "user1"
+            );
+            cross = "guest-1002";
+        });
+        login2Button.setOnClickListener(v -> {
+            cross = "guest-1001";
+            loginPresenter.login(
+                    "guest-1002",
+                    "passkey",
+                    "user2"
+            );
         });
     }
 
     @Override
     public void showHomePage() {
-        startActivity(new Intent(this, HomeActivity.class));
-        finish();
+        User user = new User();
+        user.setId(cross);
+        user.setName(cross);
+        MyApplication.getInstance().getComponent().getChatRoomRepository().createChatRoom(
+                user,
+                qiscusChatRoom -> {
+                    startActivity(ChatRoomActivity.generateIntent(this, qiscusChatRoom));
+                    finish();
+                },
+                error -> {
+
+                }
+        );
     }
 
     @Override
