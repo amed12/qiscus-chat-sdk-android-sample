@@ -1,5 +1,6 @@
 package com.qiscus.mychatui.data.source;
 
+import com.qiscus.mychatui.data.model.AppCreds;
 import com.qiscus.mychatui.data.model.User;
 import com.qiscus.mychatui.util.Action;
 import com.qiscus.sdk.chat.core.data.model.QiscusAccount;
@@ -24,4 +25,6 @@ public interface UserRepository {
     void logout();
 
     void setDeviceToken(String token);
+    void setAppCreds(AppCreds appCreds);
+    AppCreds getAppCreds();
 }

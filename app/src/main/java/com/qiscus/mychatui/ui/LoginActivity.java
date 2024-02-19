@@ -6,8 +6,10 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.qiscus.mychatui.MyApplication;
@@ -16,7 +18,12 @@ import com.qiscus.mychatui.data.model.User;
 import com.qiscus.mychatui.presenter.LoginPresenter;
 import com.qiscus.sdk.chat.core.QiscusCore;
 import com.qiscus.sdk.chat.core.data.model.QiscusChatRoom;
+import com.qiscus.sdk.chat.core.data.remote.QiscusApi;
 import com.qiscus.sdk.chat.core.data.remote.QiscusPusherApi;
+import com.qiscus.sdk.chat.core.util.QiscusAndroidUtil;
+
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * Created on : January 30, 2018
@@ -28,6 +35,8 @@ public class LoginActivity extends AppCompatActivity implements LoginPresenter.V
 
     private LinearLayout login1Button;
     private LinearLayout login2Button;
+    private TextView loginTv;
+    private TextView login2Tv;
     private ProgressDialog progressDialog;
     private String cross;
 
@@ -37,29 +46,62 @@ public class LoginActivity extends AppCompatActivity implements LoginPresenter.V
         setContentView(R.layout.activity_login);
         login1Button = findViewById(R.id.login1);
         login2Button = findViewById(R.id.login2);
+        loginTv = findViewById(R.id.tv_start);
+        login2Tv = findViewById(R.id.tv_start2);
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Please wait!");
 
         LoginPresenter loginPresenter = new LoginPresenter(this,
                 MyApplication.getInstance().getComponent().getUserRepository());
 
+
         loginPresenter.start();
 
+        if (QiscusCore.hasSetupUser()) {
+            if (QiscusCore.getQiscusAccount().getEmail().equals("guest-1001")){
+                cross = "guest-1002";
+                loginTv.setText("Log out");
+                login2Button.setVisibility(View.GONE);
+            }else {
+                cross = "guest-1001";
+                login2Tv.setText("Log out");
+                login1Button.setVisibility(View.GONE);
+            }
+        }else {
+            loginTv.setText("LOGIN USER 1");
+            login2Tv.setText("LOGIN USER 2");
+        }
         login1Button.setOnClickListener(v -> {
-            loginPresenter.login(
-                    "guest-1001",
-                    "passkey",
-                    "user1"
-            );
-            cross = "guest-1002";
+            if (QiscusCore.hasSetupUser()) {
+                logoutUser();
+                login2Button.setVisibility(View.VISIBLE);
+                loginTv.setText("LOGIN USER 1");
+            }else {
+                loginPresenter.login(
+                        "guest-1001",
+                        "passkey",
+                        "user1"
+                );
+                cross = "guest-1002";
+                loginTv.setText("LOG OUT");
+                login2Button.setVisibility(View.GONE);
+            }
         });
         login2Button.setOnClickListener(v -> {
-            cross = "guest-1001";
-            loginPresenter.login(
-                    "guest-1002",
-                    "passkey",
-                    "user2"
-            );
+            if (QiscusCore.hasSetupUser()) {
+                logoutUser();
+                login2Tv.setText("LOGIN USER 2");
+                login1Button.setVisibility(View.VISIBLE);
+            }else {
+                cross = "guest-1001";
+                loginPresenter.login(
+                        "guest-1002",
+                        "passkey",
+                        "user2"
+                );
+                login2Tv.setText("LOG OUT");
+                login1Button.setVisibility(View.GONE);
+            }
         });
     }
 
@@ -72,7 +114,6 @@ public class LoginActivity extends AppCompatActivity implements LoginPresenter.V
                 user,
                 qiscusChatRoom -> {
                     startActivity(ChatRoomActivity.generateIntent(this, qiscusChatRoom));
-                    finish();
                 },
                 error -> {
 
@@ -93,5 +134,11 @@ public class LoginActivity extends AppCompatActivity implements LoginPresenter.V
     @Override
     public void showErrorMessage(String errorMessage) {
         Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show();
+    }
+
+    private void logoutUser() {
+        if (QiscusCore.hasSetupUser()) {
+            QiscusCore.clearUser();
+        }
     }
 }

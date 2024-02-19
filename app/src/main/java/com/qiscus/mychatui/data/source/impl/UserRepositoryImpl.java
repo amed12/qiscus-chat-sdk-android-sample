@@ -10,6 +10,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.qiscus.mychatui.R;
+import com.qiscus.mychatui.data.model.AppCreds;
 import com.qiscus.mychatui.data.model.User;
 import com.qiscus.mychatui.data.source.UserRepository;
 import com.qiscus.mychatui.util.Action;
@@ -102,6 +103,18 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public void setDeviceToken(String token) {
         setCurrentDeviceToken(token);
+    }
+
+    @Override
+    public void setAppCreds(AppCreds appCreds) {
+        sharedPreferences.edit()
+                .putString("app_creds", gson.toJson(appCreds))
+                .apply();
+    }
+
+    @Override
+    public AppCreds getAppCreds() {
+        return gson.fromJson(sharedPreferences.getString("app_creds", ""), AppCreds.class);
     }
 
     private Observable<User> getCurrentUserObservable() {

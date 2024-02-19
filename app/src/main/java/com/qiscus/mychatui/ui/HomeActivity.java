@@ -48,7 +48,7 @@ public class HomeActivity extends AppCompatActivity implements HomePresenter.Vie
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FirebaseUtil.sendCurrentToken();
+//        FirebaseUtil.sendCurrentToken();
 
         linEmptyChatRooms = findViewById(R.id.linEmptyChatRooms);
         createChat = findViewById(R.id.create_chat);
