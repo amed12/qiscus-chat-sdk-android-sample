@@ -34,7 +34,7 @@ public class AppFirebaseMessagingService extends FirebaseMessagingService {
         super.onNewToken(s);
 
         Log.d("Qiscus", "onNewToken " + s);
-        QiscusCore.registerDeviceToken(s);
+//        QiscusCore.registerDeviceToken(s);
     }
 
     public static void getCurrentDeviceToken() {
