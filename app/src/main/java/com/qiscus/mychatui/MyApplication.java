@@ -37,7 +37,7 @@ public class MyApplication extends MultiDexApplication {
 
         Nirmana.init(this);
         QiscusCore.setupWithCustomServer(this, BuildConfig.QISCUS_SDK_APP_ID,
-                "https://sdk-halodoc-archival.qiscus.com/",
+                "https://halodoc-archival.qiscus.io/",
                 null,
                 null);
 
